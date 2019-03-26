@@ -11,12 +11,14 @@ const (
 	consignmentCollection = "consignments"
 )
 
+// Repository interface
 type Repository interface {
 	Create(*pb.Consignment) error
 	GetAll() ([]*pb.Consignment, error)
 	Close()
 }
 
+// ConsignmentRepository struct
 type ConsignmentRepository struct {
 	session *mgo.Session
 }

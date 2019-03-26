@@ -11,27 +11,27 @@ import (
 	"golang.org/x/net/context"
 )
 
-// IRepository interface
-type IRepository interface {
+// Repository interface
+type Repository interface {
 	Create(*proto.Consignment) (*proto.Consignment, error)
 	GetAll() []*proto.Consignment
 }
 
-// Repository - Dummy repository, this simulates the use of a datastore
+// ConsignmentRepository - Dummy repository, this simulates the use of a datastore
 // of some kind. We'll replace this with a real implementation later on.
-type Repository struct {
+type ConsignmentRepository struct {
 	consignments []*proto.Consignment
 }
 
 // Create method
-func (repo *Repository) Create(consignment *proto.Consignment) (*proto.Consignment, error) {
+func (repo *ConsignmentRepository) Create(consignment *proto.Consignment) (*proto.Consignment, error) {
 	updated := append(repo.consignments, consignment)
 	repo.consignments = updated
 	return consignment, nil
 }
 
 // GetAll method
-func (repo *Repository) GetAll() []*proto.Consignment {
+func (repo *ConsignmentRepository) GetAll() []*proto.Consignment {
 	return repo.consignments
 }
 
@@ -40,7 +40,7 @@ func (repo *Repository) GetAll() []*proto.Consignment {
 // in the generated code itself for the exact method signatures etc
 // to give you a better idea.
 type service struct {
-	repo IRepository
+	repo Repository
 }
 
 // CreateConsignment - we created just one method on our service,
@@ -69,7 +69,7 @@ func (s *service) GetConsignments(ctx context.Context, req *proto.GetRequest, re
 
 func main() {
 
-	repo := &Repository{}
+	repo := &ConsignmentRepository{}
 
 	// Create a new service. Optionally include some options here.
 	srv := micro.NewService(
